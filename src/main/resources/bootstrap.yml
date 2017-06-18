@@ -1,0 +1,14 @@
+spring:
+  cloud:
+    consul:
+      config:
+        watch:
+          enabled: true
+      port: 8500
+      discovery:
+        register-health-check: true
+        instanceId: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
+  application:
+    name: spring-days-invoice-service
+server:
+  port: 0     
