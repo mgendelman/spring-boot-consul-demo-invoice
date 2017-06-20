@@ -9,6 +9,6 @@ spring:
         register-health-check: true
         instanceId: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
   application:
-    name: spring-days-invoice-service
+    name: invoice-service
 server:
   port: 0     

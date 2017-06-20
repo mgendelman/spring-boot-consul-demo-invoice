@@ -11,24 +11,27 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 @EnableDiscoveryClient
 public class InvoiceController {
-	@Value("${lineitem.format}")
-	private String lineItemFormat;//   = "%s\t %d\t$%,.2f\t$%,.2f\t$%,.2f\t$%,.2f";
 	
-	@Autowired
-	private RestTemplate restTemplate;
+	@Value("${lineitem.format}")
+	private String lineItemFormat;
 
 	@Value("${price}")
 	private Double price;
+
+	@Autowired
+	private RestTemplate restTemplate;
+
 
 	
 		
 	@RequestMapping("/lineitem/{quantity}")
 	public String calculateLineItem(@PathVariable(value = "quantity") Integer quantity ) {
 		double subtotal = price * quantity;
-		double tax = restTemplate.getForObject("http://spring-days-tax-service/tax/{subtotal}",Double.class, subtotal );
+		double tax = restTemplate.getForObject("http://tax-service/tax/{subtotal}",Double.class, subtotal );
 		double total = subtotal + tax;
 		return String.format(this.lineItemFormat,  "product", quantity, price, subtotal,  tax, total);
 		
 	}
 	
 }
+//= "%s %d $%,.2f $%,.2f $%,.2f $%,.2f";
